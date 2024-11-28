@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: permission_system_app
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      # Environment Variables for NestJS Application
+      DATABASE_URL: postgres://bettermode_user:bettermode_pass@db:5432/bettermode_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      NODE_ENV: development
+    depends_on:
+      - db
+      - redis
+    networks:
+      - permission_system_network
+    restart: always
+
+  db:
+    image: postgres:15
+    container_name: db
+    environment:
+      POSTGRES_USER: bettermode_user
+      POSTGRES_PASSWORD: bettermode_pass
+      POSTGRES_DB: bettermode_db
+    volumes:
+      - data:/var/lib/postgresql/data
+    networks:
+      - permission_system_network
+    restart: always
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:alpine3.9
+    container_name: redis
+#    ports:
+#      - "6379:6379"
+    networks:
+      - permission_system_network
+    restart: always
+
+networks:
+  permission_system_network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local

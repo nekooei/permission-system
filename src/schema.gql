@@ -1,0 +1,93 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  name: String!
+}
+
+type Tweet {
+  id: String!
+  content: String!
+  author: User!
+  hashtags: [String!]!
+  parentTweetId: String
+  category: TweetCategory
+  location: String
+  createdAt: DateTime!
+}
+
+enum TweetCategory {
+  Sport
+  Finance
+  Tech
+  News
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PaginatedTweet {
+  nodes: [Tweet!]!
+  hasNextPage: Boolean!
+}
+
+type Group {
+  id: ID!
+  title: String!
+  users: [User!]
+  groups: [Group!]
+}
+
+type Query {
+  getAllTweets(pagination: PaginationInput!): PaginatedTweet!
+  getAllGroups: [Group!]!
+  canEditTweet(userId: String!, tweetId: String!): Boolean!
+  canViewTweet(userId: String!, tweetId: String!): Boolean!
+}
+
+input PaginationInput {
+  limit: Int!
+  page: Int!
+}
+
+type Mutation {
+  createTweet(input: CreateTweetInput!): Tweet!
+  updateGroupMembership(input: UpdateGroupMembershipInput!): Group!
+  createGroup(input: CreateGroupInput!): Group!
+  updateTweetPermissions(input: UpdateTweetPermissionsInput!): Boolean!
+}
+
+input CreateTweetInput {
+  authorId: String!
+  content: String!
+  hashtags: [String!]
+  parentTweetId: String
+  category: TweetCategory
+  location: String
+}
+
+input UpdateGroupMembershipInput {
+  groupId: String!
+  userIds: [String!]!
+}
+
+input CreateGroupInput {
+  title: String!
+  userIds: [String!]
+  groupIds: [String!]
+}
+
+input UpdateTweetPermissionsInput {
+  actorId: String!
+  tweetId: String!
+  inheritViewPermissions: Boolean
+  inheritEditPermissions: Boolean
+  viewPermissions: [String!]
+  editPermissions: [String!]
+  viewPermissionGroups: [String!]
+  editPermissionGroups: [String!]
+}
