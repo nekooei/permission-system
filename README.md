@@ -215,7 +215,6 @@ The application uses **Redis** (optional) for caching permissions and tweets, en
 ---
 
 ## **Performance Considerations**
-- **Indexes**: Indexes are applied on commonly queried fields like `tweetId`, `authorId`, `groupIds`, and `permissions`.
 - **Database Optimization**: The system is designed to handle millions of tweets and group memberships, leveraging **PostgreSQL** optimizations.
 - **Horizontal Scaling**: For high availability and scalability, consider deploying multiple instances of the application with a load balancer.
 
