@@ -17,3 +17,5 @@ EXPOSE 3000
 # Start application
 CMD ["npm", "run", "start:dev"]
 
+
+
